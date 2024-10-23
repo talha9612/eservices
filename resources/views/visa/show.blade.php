@@ -2,47 +2,278 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visa Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-image: url('../assets/images/header.png');
+            background-size: cover; /* Ensures the image covers the entire width */
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 450px; /* Fixed height for header */
+            position: relative;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            position: absolute;
+        }
+
+        .header img {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            width: 50px;
+        }
+
+        .section {
+            padding: 20px;
+        }
+        .qr-code {
+            position: absolute;
+            top: 10px;
+            left: 20px; /* Adjust as necessary */
+            width: 100px; /* Adjust the width of the QR code */
+        }
+        h2 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+            font-size: 1.2em;
+            color: #405a93;
+        }
+
+        .visa-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .visa-table th, .visa-table td {
+            padding: 12px;
+            text-align: center;
+            font-size: 0.9em;
+            border: 1px solid #ddd;
+            background-color: #f0f0f0;
+        }
+
+        .visa-table th {
+            width: 25%;
+        }
+
+        .visa-table td {
+            width: 50%;
+        }
+
+        .instructions {
+            font-size: 0.85em;
+            color: #777;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img class="qr-code" src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
+            {{-- <img src="kuwait-logo.png" alt="Kuwait Logo"> --}}
+        </div>
+
+        <div class="section">
+            <table style="width: 100%;" class="heading-table mt-15">
+                <tr>
+                    <!-- Arabic on the left with right-to-left text direction -->
+                    <td class="left" style="text-align: left; direction: rtl;">
+                        <h2>Visa Details</h2>
+                    </td>
+                    <!-- English on the right -->
+                    <td class="right" style="text-align: right;">
+                        <h2>بيانات التأشيرة</h2>
+                    </td>
+                </tr>
+            </table>
+            
+            <table class="visa-table">
+                <tr>
+                    <th>Visa Number</th>
+                    <td>12345678</td>
+                    <th>رقم التأشيرة</th>
+                </tr>
+                <tr>
+                    <th>Visa Type</th>
+                    <td>Tourist</td>
+                    <th>نوع التأشيرة</th>
+                </tr>
+                <tr>
+                    <th>Visa Purpose</th>
+                    <td>Visit</td>
+                    <th>غرض التأشيرة</th>
+                </tr>
+                <tr>
+                    <th>Date of Issue</th>
+                    <td>2024-10-20</td>
+                    <th>تاريخ الإصدار</th>
+                </tr>
+                <tr>
+                    <th>Date of Expiry</th>
+                    <td>2024-12-20</td>
+                    <th>تاريخ انتهاء الصلاحية</th>
+                </tr>
+                <tr>
+                    <th>Place of Issue</th>
+                    <td>Kuwait</td>
+                    <th>مكان الإصدار</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <table style="width: 100%;" class="heading-table mt-15">
+                <tr>
+                    <!-- English on the left with right-to-left text direction -->
+                    <td class="left" style="text-align: left; direction: rtl;">
+                        <h2>Visa Holder Details</h2>
+                    </td>
+                    <!-- Arabic on the right -->
+                    <td class="right" style="text-align: right;">
+                        <h2>بيانات صاحب التأشيرة</h2>
+                    </td>
+                </tr>
+            </table>
+            <table class="visa-table">
+                <tr>
+                    <th>Full Name</th>
+                    <td>John Doe</td>
+                    <th>الاسم الكامل</th>
+                </tr>
+                <tr>
+                    <th>MOI Reference</th>
+                    <td class="highlight">{{ $visa->moi_refrence }}</td>
+                    <th>مرجع وزارة الداخلية</th>
+                </tr>
+                <tr>
+                    <th>Nationality</th>
+                    <td>American</td>
+                    <th>الجنسية</th>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <td>Male</td>
+                    <th>النوع</th>
+                </tr>
+                <tr>
+                    <th>Occupation</th>
+                    <td>Engineer</td>
+                    <th>المهنة</th>
+                </tr>
+                <tr>
+                    <th>Date of Birth</th>
+                    <td>1985-05-15</td>
+                    <th>تاريخ الميلاد</th>
+                </tr>
+                <tr>
+                    <th>Passport No.</th>
+                    <td>A12345678</td>
+                    <th>رقم جواز السفر</th>
+                </tr>
+                <tr>
+                    <th>Place of Issue</th>
+                    <td>USA</td>
+                    <th>مكان الإصدار</th>
+                </tr>
+                <tr>
+                    <th>Passport Type</th>
+                    <td class="highlight">{{ $visa->passport_type }}</td>
+                    <th>نوع الجواز</th>
+                </tr>
+                <tr>
+                    <th>Expiry Date</th>
+                    <td>2026-05-15</td>
+                    <th>تاريخ انتهاء الصلاحية</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <table style="width: 100%;" class="heading-table mt-15">
+                <tr>
+                    <!-- English on the left with right-to-left text direction -->
+                    <td class="left" style="text-align: left; direction: rtl;">
+                        <h2>Employer/Family Breadwinner Details</h2>
+                    </td>
+                    <!-- Arabic on the right -->
+                    <td class="right" style="text-align: right;">
+                        <h2>تفاصيل صاحب العمل / معيل الأسرة</h2>
+                    </td>
+                </tr>
+            </table>
+            
+            <table class="visa-table">
+                <tr>
+                    <th>Full Name</th>
+                    <td>Jane Doe</td>
+                    <th>الاسم الكامل</th>
+                </tr>
+                <tr>
+                    <th>MOI Reference For Family</th>
+                    <td class="highlight">{{ $visa->moi_refrence_family }}</td>
+                    <th>مرجع وزارة الداخلية للعائلة</th>
+                </tr>
+                <tr>
+                    <th>Mobile Number</th>
+                    <td>+123 456 7890</td>
+                    <th>رقم الهاتف المحمول</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="instructions">
+            <p>Important Instructions: Keep this document for your records.</p>
+        </div>
+
+        <div class="footer">
+            <p>General Department of Public Affairs - Kuwait</p>
+        </div>
+    </div>
+</body>
+</html>
+
+{{--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visa PDF</title>
-     <style>
-  /* Reset styles for html and body */
-  html, body {
-            height: 100%; /* Full height */
-            margin: 0; /* Remove default margin */
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-        }
-
-        /* Set the background image on the body */
-        body {
-            background-image: url('{{ asset('/assets/images/pdf-background.jpg') }}');
-            background-repeat: no-repeat; /* Do not repeat the image */
-            background-size: contain; /* Make sure the entire image is displayed */
-            background-position: top center; /* Position the image at the top center */
-            height: 1000px; /* Set this to the height of your image in pixels */
-            padding: 0; /* Reset padding */
-        }
-
-        /* Content styles */
-        .content {
-            position: relative; /* Position content above the background */
-            color: black; /* Text color (adjust as needed) */
-            text-align: center; /* Center text */
-            padding: 20px; /* Add padding for readability */
-            z-index: 1; /* Ensure content is above the background */
-        }
-
-        /* Ensure the content is tall enough to require scrolling */
-        .extra-content {
-            height: 150vh; /* This should be enough to ensure scrolling */
-            background-color: rgba(255, 255, 255, 0.7); /* Light background for contrast */
-            padding: 20px; /* Add padding for readability */
-            border-radius: 8px; /* Optional: round corners */
-            margin: 20px auto; /* Center the content */
-            max-width: 800px; /* Limit width of the content */
-        }
-    </style> 
-    {{-- <style>
+    
+      
+    <style>
         
        body { @font-face { font-family: "Cairo"; src: url('/assets/fonts/cairo/cairo.ttf') format('truetype'); font-weight: bold; font-style: normal; }
         @page {
@@ -77,12 +308,9 @@
         #visa21 { margin-top: 663px; }
         #visa22 { margin-top: 692px; }
     }
-    </style> --}}
-</head>
+    </style> 
+</head>--}}
  {{-- <body>
-    <div class="background">
-    <img src="{{ asset('assets/images/your-background-image.jpg') }}" alt="Background">
-        </div>
     <div class="header">
         <div class="qr">
             <div class="qr-spacing"></div>

@@ -1,0 +1,115 @@
+@extends('master')
+@section('main-content')
+<div class="container">
+	<div class="row">
+		<h2>Know the Visa Status</h2>
+		 <div class="form-group">
+            <label for="exampleInputEmail1">Passport No</label>
+            <input type="text" class="form-control" id="passport-no">
+        </div>
+        <div class="mb-3">
+        	<label for="Kategori" class="form-label">Nationality</label>
+        	<select name="holderNationality" id="Kategori" required="" class="ms-1 d-block w-100 ng-pristine ng-invalid ng-touched">
+        		<option value="Afghanistan أفغانستان">Afghanistan أفغانستان</option>
+        		<option value="Albania ألبانيا">Albania ألبانيا</option>
+        		<option value="Algeria الجزائر">Algeria الجزائر</option>
+        		<option value="Andorra أندورا">Andorra أندورا</option>
+        		<option value="Angola أنغولا">Angola أنغولا</option>
+        		<option value="Antigua and Barbuda أنتيغوا وبربودا">Antigua and Barbuda أنتيغوا وبربودا</option>
+        		<option value="Argentina الأرجنتين">Argentina الأرجنتين</option>
+        		<option value="Armenia أرمينيا">Armenia أرمينيا</option>
+        		<option value="Australia أستراليا">Australia أستراليا</option>
+        		<option value="Austria النمسا">Austria النمسا</option>
+        		<option value="Azerbaijan أذربيجان">Azerbaijan أذربيجان</option>
+        		<option value="Bahamas الباهاما">Bahamas الباهاما</option>
+        		<option value="Bahrain البحرين">Bahrain البحرين</option>
+        		<option value="Bangladesh بنغلاديش">Bangladesh بنغلاديش</option>
+        		<option value="Barbados بربادوس">Barbados بربادوس</option>
+        		<option value="Belarus روسيا البيضاء">Belarus روسيا البيضاء</option>
+        		<option value="Belgium بلجيكا">Belgium بلجيكا</option>
+        		<option value="Belize بليز">Belize بليز</option>
+        		<option value="Benin بنين">Benin بنين</option>
+        		<option value="Bhutan بوتان">Bhutan بوتان</option>
+        		<option value="Bolivia بوليفيا">Bolivia بوليفيا</option>
+        		<option value="Bosnia and Herzegovina البوسنة والهرسك">Bosnia and Herzegovina البوسنة والهرسك</option
+        			><option value="Botswana بوتسوانا">Botswana بوتسوانا</option>
+        			<option value="Brazil البرازيل">Brazil البرازيل</option>
+        			<option value="Brunei بروناي">Brunei بروناي</option>
+        			<option value="Bulgaria بلغاريا">Bulgaria بلغاريا</option>
+        			<option value="Burkina Faso بوركينا فاسو">Burkina Faso بوركينا فاسو</option>
+        			<option value="Burundi بوروندي">Burundi بوروندي</option>
+        			<option value="Cabo Verde الرأس الأخضر">Cabo Verde الرأس الأخضر</option>
+        			<option value="Cambodia كمبوديا">Cambodia كمبوديا</option>
+        			<option value="Cameroon الكاميرون">Cameroon الكاميرون</option>
+        			<option value="Canada كندا">Canada كندا</option>
+        			<option value="Central African Republic جمهورية أفريقيا الوسطى">Central African Republic جمهورية أفريقيا الوسطى</option>
+        			<option value="Chad تشاد">Chad تشاد</option>
+        			<option value="Chile شيلي">Chile شيلي</option>
+        			<option value="China الصين">China الصين</option>
+        			<option value="Colombia كولومبيا">Colombia كولومبيا</option>
+        			<option value="Comoros جزر القمر">Comoros جزر القمر</option>
+        			<option value="Congo الكونغو">Congo الكونغو</option>
+        			<option value="Costa Rica كوستاريكا">Costa Rica كوستاريكا</option>
+        			<option value="Croatia كرواتيا">Croatia كرواتيا</option>
+        			<option value="Cuba كوبا">Cuba كوبا</option>
+        			<option value="Cyprus قبرص">Cyprus قبرص</option>
+        			<option value="Czechia التشيك">Czechia التشيك</option>
+        			<option value="Denmark الدنمارك">Denmark الدنمارك</option>
+        			<option value="Djibouti جيبوتي">Djibouti جيبوتي</option>
+        			<option value="Dominica دومينيكا">Dominica دومينيكا</option>
+        			<option value="Dominican Republic جمهورية الدومينيكان">Dominican Republic جمهورية الدومينيكان</option>
+        			<option value="East Timor تيمور الشرقية">East Timor تيمور الشرقية</option>
+        			<option value="Ecuador الإكوادور">Ecuador الإكوادور</option>
+        			<option value="Egypt مصر">Egypt مصر</option>
+        			<option value="El Salvador السلفادور">El Salvador السلفادور</option>
+        			<option value="Equatorial Guinea غينيا الاستوائية">Equatorial Guinea غينيا الاستوائية</option>
+        			<option value="Eritrea إريتريا">Eritrea إريتريا</option>
+        			<option value="Estonia استونيا">Estonia استونيا</option>
+        			<option value="Eswatini إسواتيني">Eswatini إسواتيني</option>
+        			<option value="Ethiopia إثيوبيا">Ethiopia إثيوبيا</option>
+        			<option value="Fiji فيجي">Fiji فيجي</option>
+        			<option value="Finland فنلندا">Finland فنلندا</option>
+        			<option value="France فرنسا">France فرنسا</option>
+        			<option value="Gabon الغابون">Gabon الغابون</option>
+        			<option value="Gambia غامبيا">Gambia غامبيا</option>
+        			<option value="Georgia جورجيا">Georgia جورجيا</option>
+        			<option value="Germany ألمانيا">Germany ألمانيا</option>
+        			<option value="Ghana غانا">Ghana غانا</option>
+        			<option value="Greece اليونان">Greece اليونان</option>
+        			<option value="Grenada غرينادا">Grenada غرينادا</option>
+        			<option value="Guatemala غواتيمالا">Guatemala غواتيمالا</option>
+        			<option value="Guinea غينيا">Guinea غينيا</option>
+        			<option value="Guinea-Bissau غينيا بيساو">Guinea-Bissau غينيا بيساو</option>
+        			<option value="Guyana غيانا">Guyana غيانا</option>
+        			<option value="Haiti هايتي">Haiti هايتي</option>
+        			<option value="Honduras هندوراس">Honduras هندوراس</option>
+        			<option value="Hungary المجر">Hungary المجر</option>
+        			<option value="Iceland آيسلندا">Iceland آيسلندا</option>
+        			<option value="India الهند">India الهند</option>
+        			<option value="Indonesia إندونيسيا">Indonesia إندونيسيا</option>
+        			<option value="Iran إيران">Iran إيران</option>
+        			<option value="Iraq العراق">Iraq العراق</option>
+        			<option value="Ireland أيرلندا">Ireland أيرلندا</option>
+        			<option value="Israel إسرائيل">Israel إسرائيل</option>
+        			<option value="Italy إيطاليا">Italy إيطاليا</option>
+        			<option value="Jamaica جامايكا">Jamaica جامايكا</option>
+        			<option value="Japan اليابان">Japan اليابان</option>
+        			<option value="Jordan الأردن">Jordan الأردن</option>
+        			<option value="Kazakhstan كازاخستان">Kazakhstan كازاخستان</option>
+        			<option value="Kenya كينيا">Kenya كينيا</option>
+        			<option value="Kiribati كيريباتي">Kiribati كيريباتي</option>
+        			<option value="Korea, North كوريا الشمالية">Korea, North كوريا الشمالية</option>
+        			<option value="Korea, South كوريا الجنوبية">Korea, South كوريا الجنوبية</option>
+        			<option value="Kosovo كوسوفو">Kosovo كوسوفو</option>
+        			<option value="Kuwait الكويت">Kuwait الكويت</option>
+        			<option value="Kyrgyzstan قيرغيزستان">Kyrgyzstan قيرغيزستان</option>
+        			<option value="Laos لاوس">Laos لاوس</option>
+        			<option value="Latvia لاتفيا">Latvia لاتفيا</option>
+        			<option value="Lebanon لبنان">Lebanon لبنان</option>
+        			<option value="Lesotho ليسوتو">Lesotho ليسوتو</option>
+        			<option value="Liberia ليبيريا">Liberia ليبيريا</option>
+        			<option value="Libya ليبيا">Libya ليبيا</option>
+        			<option value="Liechtenstein ليختنشتاين">Liechtenstein ليختنشتاين</option>        			
+	</div>
+</div>
+@endsection

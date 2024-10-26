@@ -22,36 +22,37 @@
         }
 
         .header {
-            background-image: url('../assets/images/header.png');
-            background-size: cover; /* Ensures the image covers the entire width */
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 450px; /* Fixed height for header */
-            position: relative;
-        }
+    background-image: url('../assets/images/head1.png');
+    background-size: contain; /* Ensures the image fits within the header */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent repeating the image */
+    height: 300px; /* Fixed height for header */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns content to the left */
+    padding: 20px;
+    overflow: hidden; /* Prevents any overflow of content */
+}
 
-        .header h1 {
-            color: white;
-            font-size: 2em;
-            font-weight: bold;
-            position: absolute;
-        }
-
-        .header img {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            width: 50px;
-        }
-
+.qr-code {
+    width: 250px; /* Adjust size as needed */
+    height: 250px; /* Maintain aspect ratio */
+    margin-right: 20px; /* Space between QR code and left side */
+    z-index: 1; /* Ensures the QR code is above the background */
+}
+.police-logo {
+    width: 150px; /* Adjust size as needed */
+    height: 200px; /* Maintain aspect ratio */
+    background-size: contain; /* Ensures the logo fits within the div */
+    background-position: center; /* Center the logo */
+    background-repeat: no-repeat; /* Prevent repeating the logo */
+    z-index: 0; /* Keep it behind other content if necessary */
+    margin-left: 70%;
+    margin-bottom:2%;
+}
         .section {
             padding: 20px;
-        }
-        .qr-code {
-            position: absolute;
-            top: 10px;
-            left: 20px; /* Adjust as necessary */
-            width: 100px; /* Adjust the width of the QR code */
         }
         h2 {
             border-bottom: 2px solid #ccc;
@@ -100,10 +101,14 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <img class="qr-code" src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
-            {{-- <img src="kuwait-logo.png" alt="Kuwait Logo"> --}}
-        </div>
+      
+            <div class="header">
+                <img src="{{ $qrCode }}" alt="QR Code" class="qr-code">
+                <img src="../assets/images/kuwait-police-logo-2.png" alt="Police-Logo" class="police-logo">
+                <p style="text-align: center; font-weight: bold; margin-bottom:-10%; margin-left:-8%">دولة الكويت</p>
+                <p style="text-align: center; font-weight: bold; margin-bottom:-13%; margin-left:-5%">State of Kuwait</p>
+            </div>            
+
 
         <div class="section">
             <table style="width: 100%;" class="heading-table mt-15">

@@ -8,11 +8,15 @@ use App\Models\Scopes\ActiveScope;
 use Barryvdh\DomPDF\Facade\PDF;
 
 // QR
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Logo\Logo;
-use Endroid\QrCode\Encoding\Encoding;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+// use Endroid\QrCode\QrCode;
+// use Endroid\QrCode\Logo\Logo;
+// use Endroid\QrCode\Builder\Builder;
+// use Endroid\QrCode\Encoding\Encoding;
+// use Endroid\QrCode\Writer\PngWriter;
+// use Endroid\QrCode\Label\Label;
+// use Endroid\QrCode\Color\Color;
 
 class VisaController extends Controller
 {
@@ -132,18 +136,18 @@ class VisaController extends Controller
     //     $mpdf->WriteHTML($view);
     //     return $mpdf->Output("{$visa->passport_no}.pdf", 'I'); // Output PDF to browser
     // }
-    public function show(string $id)
-    {
-        // Retrieve the visa without global scope
-        $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-
+   public function show(string $id)
+{
+    // Retrieve the visa without global scope
+    $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+   // dd($visa->qr_link);
         // Generate QR code link (if needed for the view)
-        $url = route('verify.qr', $visa->qr_link);
+        $url = route('verify.qr', 'qr_link' , $visa->qr_link);
         $qrCode = $this->generateQrBase64($url);
-
+       // dd($qrCode);
         // Pass visa and QR code to the view for web display
         return view('visa.show', compact('visa', 'qrCode'));
-    }
+}
     public function generatePdf(string $id)
     {
         // Retrieve the visa without global scope
@@ -228,26 +232,35 @@ class VisaController extends Controller
     }
 
     public function generateQrBase64($data)
-    {
+{
+    // Generate the QR code with a logo merged
+    return 'data:image/png;base64,' . base64_encode(
+        QrCode::format('png')
+            ->merge(public_path('./assets/images/kuwait-police-logo-2.png'), 0.3, true) // Merging the logo
+            ->generate($data) // Generate the QR code
+    );
+}
+
+        
         // Step 1: Create a new instance of the QR code
-        $qrCode = QrCode::create($data)
-            ->setEncoding(new Encoding('UTF-8')) // Use the imported Encoding class
-            ->setSize(350)
-            ->setMargin(20)
-            ->setForegroundColor(new Color(68, 114, 196)) // Set foreground color to #1C6198
-            ->setBackgroundColor(new Color(255, 255, 255)); // Set background color to white
+        // $qrCode = QrCode::create($data)
+        //     ->setEncoding(new Encoding('UTF-8')) // Use the imported Encoding class
+        //     ->setSize(350)
+        //     ->setMargin(20)
+        //     ->setForegroundColor(new Color(68, 114, 196)) // Set foreground color to #1C6198
+        //     ->setBackgroundColor(new Color(255, 255, 255)); // Set background color to white
 
-        $logoPath = public_path('assets/images/kuwait-police-logo-no-transparent.png');
-        $logo = Logo::create($logoPath)->setResizeToWidth(60);
+        // $logoPath = public_path('assets/images/kuwait-police-logo-no-transparent.png');
+        // $logo = Logo::create($logoPath)->setResizeToWidth(60);
 
-        // Step 3: Write the QR code to PNG format
-        $writer = new PngWriter();
-        $result = $writer->write($qrCode, $logo);
+        // // Step 3: Write the QR code to PNG format
+        // $writer = new PngWriter();
+        // $result = $writer->write($qrCode, $logo);
 
-        // Step 4: Save the QR code to a file
-        $qrCodePath = public_path('uploads/qrcodes/qr_code_with_logo.png');
-        $result->saveToFile($qrCodePath);
+        // // Step 4: Save the QR code to a file
+        // $qrCodePath = public_path('uploads/qrcodes/qr_code_with_logo.png');
+        // $result->saveToFile($qrCodePath);
 
-        return $qrCodePath;
-    }
+        // return $qrCodePath;
+    //}
 }

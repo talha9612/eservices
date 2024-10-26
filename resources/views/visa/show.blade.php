@@ -3,44 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Visa Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Cairo', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f9f9f9;
         }
+        @font-face {
+    font-family: 'Cairo';
+    src: url('/assets/fonts/cairo/cairo.ttf') 
+    format('truetype'); 
+    font-weight: bold; 
+    font-style: normal; 
+    format('truetype'); /* Adjust the path as needed */
+}
+.visa-table td {
+    color: #375295; /* Text color */
+    font-family: 'Cairo', sans-serif; /* Use the Cairo font */
+    font-weight: bold; /* Use bold weight */
+    font-size: 1.1em; /* Increase font size */
+    letter-spacing: 0.5px; /* Adds slight spacing to make text stand out */
+}
+.visa-table th {
+    color: #375295; /* Text color */
+    font-family: 'Cairo', sans-serif; /* Use the Cairo font */
+    font-size: 1.1em; /* Increase font size */
+    letter-spacing: 0.5px; /* Adds slight spacing to make text stand out */
+}
+.section h2{
+    
+    color: #375295; /* Text color */
+    font-family: 'Cairo', sans-serif; /* Use the Cairo font */
+    font-weight: bold; /* Use bold weight */
+    font-size: 1.1em; /* Increase font size */
+    letter-spacing: 0.5px; /* Adds slight spacing to make text stand out */
 
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .header {
-    background-image: url('../assets/images/head1.png');
-    background-size: contain; /* Ensures the image fits within the header */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent repeating the image */
-    height: 300px; /* Fixed height for header */
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Aligns content to the left */
-    padding: 20px;
-    overflow: hidden; /* Prevents any overflow of content */
 }
 
-.qr-code {
-    width: 250px; /* Adjust size as needed */
-    height: 250px; /* Maintain aspect ratio */
-    margin-right: 20px; /* Space between QR code and left side */
-    z-index: 1; /* Ensures the QR code is above the background */
-}
+
+
 .police-logo {
     width: 150px; /* Adjust size as needed */
     height: 200px; /* Maintain aspect ratio */
@@ -100,14 +105,11 @@
     </style>
 </head>
 <body>
-    <div class="container">
-      
-            <div class="header">
-                <img src="{{ $qrCode }}" alt="QR Code" class="qr-code">
-                <img src="../assets/images/kuwait-police-logo-2.png" alt="Police-Logo" class="police-logo">
-                <p style="text-align: center; font-weight: bold; margin-bottom:-10%; margin-left:-8%">دولة الكويت</p>
-                <p style="text-align: center; font-weight: bold; margin-bottom:-13%; margin-left:-5%">State of Kuwait</p>
-            </div>            
+
+        <div class="relative w-full overflow-hidden">
+            <img src="../assets/images/head.png" alt="Head image" class="w-full h-full"/>
+            <img src="{{ $qrCode }}" alt="QR Code" class="absolute left-10 top-10 md:left-20 md:top-20 border-8 border-white" style="width:10%; height:auto; margin-left: 20px;"/>
+        </div>     
 
 
         <div class="section">
@@ -125,35 +127,36 @@
             </table>
             
             <table class="visa-table">
-                <tr>
+                <tr class="border">
                     <th>Visa Number</th>
-                    <td>12345678</td>
+                    <td>{{ $visa->visa_no }}</td>
                     <th>رقم التأشيرة</th>
                 </tr>
-                <tr>
+                <tr class="border">
                     <th>Visa Type</th>
-                    <td>Tourist</td>
-                    <th>نوع التأشيرة</th>
+                    <td>{{ $visa->visa_type_english }}</td>
+                    <th>{{ $visa->visa_type_arabic }}</th>
                 </tr>
                 <tr>
                     <th>Visa Purpose</th>
-                    <td>Visit</td>
-                    <th>غرض التأشيرة</th>
+                    <td>{{ $visa->visa_purpose_english }}</td>
+                    <th>{{ $visa->visa_purpose_arabic }}</th>
                 </tr>
                 <tr>
                     <th>Date of Issue</th>
-                    <td>2024-10-20</td>
+                    <td>{{ \Carbon\Carbon::parse($visa->date_of_issue)->format('d-m-y') }}</td>
                     <th>تاريخ الإصدار</th>
+            
                 </tr>
                 <tr>
                     <th>Date of Expiry</th>
-                    <td>2024-12-20</td>
+                    <td>{{ \Carbon\Carbon::parse($visa->date_of_expiry)->format('d-m-y') }}</td>
                     <th>تاريخ انتهاء الصلاحية</th>
                 </tr>
                 <tr>
                     <th>Place of Issue</th>
-                    <td>Kuwait</td>
-                    <th>مكان الإصدار</th>
+                    <td>{{ $visa->place_of_issue }}</td>
+                    <th>{{ $visa->place_of_issue_arabic }}</th>
                 </tr>
             </table>
         </div>
@@ -174,52 +177,52 @@
             <table class="visa-table">
                 <tr>
                     <th>Full Name</th>
-                    <td>John Doe</td>
-                    <th>الاسم الكامل</th>
+                    <td>{{ $visa->fullname_english }}</td>
+                    <th>{{ $visa->fullname_arabic }}</th>
                 </tr>
                 <tr>
                     <th>MOI Reference</th>
-                    <td class="highlight">{{ $visa->moi_refrence }}</td>
+                    <td>{{ $visa->moi_refrence }}</td>
                     <th>مرجع وزارة الداخلية</th>
                 </tr>
                 <tr>
                     <th>Nationality</th>
-                    <td>American</td>
+                    <td>{{ $visa->nationality }}</td>
                     <th>الجنسية</th>
                 </tr>
                 <tr>
                     <th>Gender</th>
-                    <td>Male</td>
+                    <td>{{ $visa->gender }}</td>
                     <th>النوع</th>
                 </tr>
                 <tr>
                     <th>Occupation</th>
-                    <td>Engineer</td>
-                    <th>المهنة</th>
+                    <td>{{ $visa->occupation_english }}</td>
+                    <th>{{ $visa->occupation_arabic }}</th>
                 </tr>
                 <tr>
                     <th>Date of Birth</th>
-                    <td>1985-05-15</td>
+                    <td>{{ \Carbon\Carbon::parse($visa->date_of_birth)->format('d-m-y') }}</td>
                     <th>تاريخ الميلاد</th>
                 </tr>
                 <tr>
                     <th>Passport No.</th>
-                    <td>A12345678</td>
+                    <td>{{ $visa->passport_no }}</td>
                     <th>رقم جواز السفر</th>
                 </tr>
                 <tr>
                     <th>Place of Issue</th>
-                    <td>USA</td>
+                    <td>{{ $visa->place_of_issue }}</td>
                     <th>مكان الإصدار</th>
                 </tr>
                 <tr>
                     <th>Passport Type</th>
-                    <td class="highlight">{{ $visa->passport_type }}</td>
+                    <td>{{ $visa->passport_type }}</td>
                     <th>نوع الجواز</th>
                 </tr>
                 <tr>
                     <th>Expiry Date</th>
-                    <td>2026-05-15</td>
+                    <td>{{ \Carbon\Carbon::parse($visa->holder_expiry_date)->format('d-m-y') }}</td>
                     <th>تاريخ انتهاء الصلاحية</th>
                 </tr>
             </table>
@@ -242,30 +245,51 @@
             <table class="visa-table">
                 <tr>
                     <th>Full Name</th>
-                    <td>Jane Doe</td>
+                    <td>{{ $visa->company_fullname_arabic }}</td>
                     <th>الاسم الكامل</th>
                 </tr>
                 <tr>
                     <th>MOI Reference For Family</th>
-                    <td class="highlight">{{ $visa->moi_refrence_family }}</td>
+                    <td>{{ $visa->moi_refrence_family }}</td>
                     <th>مرجع وزارة الداخلية للعائلة</th>
                 </tr>
                 <tr>
                     <th>Mobile Number</th>
-                    <td>+123 456 7890</td>
+                    <td>{{ $visa->mobile_no }}</td>
                     <th>رقم الهاتف المحمول</th>
                 </tr>
             </table>
         </div>
-
-        <div class="instructions">
-            <p>Important Instructions: Keep this document for your records.</p>
+        <div class="above-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #ddd;">
+            <!-- Left Section with Text and Signature -->
+            <div style="text-align: left;">
+                <p style="color: #0D4B91; font-size: 16px; margin: 0;">
+                    مدير عام الإدارة العامة لشؤون الإقامة<br>
+                    العميد/ يوسف حامد الأبوب
+                </p>
+                <img src="../assets/images/sign.png" alt="Signature" style="margin-top: 10px; max-width: 100px;">
+            </div>
+        
+            <!-- Right Section with QR Code and Text -->
+            <div style="text-align: right;">
+                <img src="{{ $qrCode }}" alt="QR Code"  style="width:50%; height:50%;"/>
+                <p style="color: #0D4B91; font-size: 16px; margin: 0;">
+                    تعليمات مهمة<br>
+                    <span style="font-size: 14px; color: #0D4B91;">Important Instructions</span>
+                </p>
+            </div>
         </div>
-
-        <div class="footer">
-            <p>General Department of Public Affairs - Kuwait</p>
+        
+        <div class="footer-block bg-cover bg-no-repeat bg-center" style="background-image: url('../assets/images/footer-block.png'); padding: 3px;"> </div>
+        <div class="footer relative bg-cover bg-no-repeat bg-center" style="background-image: url('../assets/images/footer-bg.png');">
+            <div style="display: flex; justify-content: space-between; padding: 20px; color: #0D4B91; font-size: 18px;">
+                <span>ختم الخروج</span>
+                <span>ختم الدخول</span>   
+            </div>
         </div>
-    </div>
+        
+       
+        
 </body>
 </html>
 

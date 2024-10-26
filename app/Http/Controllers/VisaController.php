@@ -233,13 +233,17 @@ class VisaController extends Controller
 
     public function generateQrBase64($data)
 {
-    // Generate the QR code with a logo merged
-    return 'data:image/png;base64,' . base64_encode(
-        QrCode::format('png')
-            ->merge(public_path('./assets/images/kuwait-police-logo-2.png'), 0.3, true) // Merging the logo
-            ->generate($data) // Generate the QR code
-    );
+        return 'data:image/png;base64,' . base64_encode(
+            QrCode::backgroundColor(255, 255, 255, 100) // Background color with full opacity
+                ->color(70, 112, 203) // RGB color values without alpha
+                ->format('png')
+                
+                ->merge(public_path('./assets/images/kuwait-police-logo-no-transparent.png'), 0.3, true) // Merging the logo
+                ->generate($data) // Generate the QR code
+        );
+    
 }
+
 
         
         // Step 1: Create a new instance of the QR code

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\App;
 use App\Http\Requests\VisaRequest;
 use App\Models\Visa;
 use App\Models\Scopes\ActiveScope;
-use Barryvdh\DomPDF\Facade\PDF;
-
+use Barryvdh\DomPDF\Facade\Pdf; // Correct import for version 3.0
 // QR
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -90,52 +90,6 @@ class VisaController extends Controller
 
         return response()->errorMessage('User not Found !');
     }
-
-    /**
-     * Show visa
-     */
-    // public function show(string $id)
-    // {
-    //     $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-    //     $url = route('verify.qr', $visa->qr_link);
-
-    //     // QR base 64
-    //     $qrCode = $this->generateQrBase64($url);
-
-    //     // Setup custom font directory and font data configuration
-    //     $fontDirs = [public_path('assets/fonts/cairo')];
-    //     $fontData = [
-    //         'cairo' => [
-    //             'R' => 'cairo.ttf',
-    //             'B' => 'cairo-bold.ttf'
-    //         ]
-    //     ];
-
-    //     $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-    //     $defaultFontDirs = $defaultConfig['fontDir'];
-
-    //     $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-    //     $defaultFontData = $defaultFontConfig['fontdata'];
-
-    //     $mpdf = new \Mpdf\Mpdf([
-    //         'mode' => 'utf-8',
-    //         'format' => 'A4',
-    //         'orientation' => 'P',
-    //         'autoScriptToLang' => true,
-    //         'autoLangToFont' => true,
-    //         'margin_top' => 0, // Adjust margins as needed
-    //         'margin_bottom' => 0,
-    //         'margin_left' => 0,
-    //         'margin_right' => 0,
-    //         'fontDir' => array_merge($defaultFontDirs, $fontDirs), // Merge default font directory with your custom directory
-    //         'fontdata' => $defaultFontData + $fontData, // Merge default font data with your custom font data
-    //         'default_font' => 'cairo' // Set default font to Amiri
-    //     ]);
-
-    //     $view = view('visa.show', compact('visa'))->render(); // Render view to HTML string
-    //     $mpdf->WriteHTML($view);
-    //     return $mpdf->Output("{$visa->passport_no}.pdf", 'I'); // Output PDF to browser
-    // }
    public function show(string $id)
 {
     // Retrieve the visa without global scope
@@ -144,59 +98,10 @@ class VisaController extends Controller
         // Generate QR code link (if needed for the view)
         $url = route('verify.qr', 'qr_link' , $visa->qr_link);
         $qrCode = $this->generateQrBase64($url);
-       // dd($qrCode);
-        // Pass visa and QR code to the view for web display
-        return view('visa.show', compact('visa', 'qrCode'));
+        $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
+        $pdfQrCode = $this->generateQrBase64($pdfUrl);
+        return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
 }
-    public function generatePdf(string $id)
-    {
-        // Retrieve the visa without global scope
-        $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-
-        // Generate QR code URL
-        $url = route('verify.qr', $visa->qr_link);
-        $qrCode = $this->generateQrBase64($url);
-
-        // Custom font configuration for PDF
-        $fontDirs = [public_path('assets/fonts/cairo')];
-        $fontData = [
-            'cairo' => [
-                'R' => 'cairo.ttf',
-                'B' => 'cairo-bold.ttf'
-            ]
-        ];
-
-        // Setup font configuration with MPDF
-        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-        $defaultFontDirs = $defaultConfig['fontDir'];
-
-        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-        $defaultFontData = $defaultFontConfig['fontdata'];
-
-        // Initialize MPDF with custom settings
-        $mpdf = new \Mpdf\Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'orientation' => 'P',
-            'autoScriptToLang' => true,
-            'autoLangToFont' => true,
-            'margin_top' => 0,
-            'margin_bottom' => 0,
-            'margin_left' => 0,
-            'margin_right' => 0,
-            'fontDir' => array_merge($defaultFontDirs, $fontDirs),
-            'fontdata' => $defaultFontData + $fontData,
-            'default_font' => 'cairo'
-        ]);
-
-        // Render the visa show view as a PDF
-        $view = view('visa.show', compact('visa', 'qrCode'))->render();
-        $mpdf->WriteHTML($view);
-
-        // Output PDF to browser
-        return $mpdf->Output("{$visa->passport_no}.pdf", 'I');
-    }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -232,17 +137,19 @@ class VisaController extends Controller
     }
 
     public function generateQrBase64($data)
-{
-        return 'data:image/png;base64,' . base64_encode(
-            QrCode::backgroundColor(255, 255, 255, 100) // Background color with full opacity
-                ->color(70, 112, 203) // RGB color values without alpha
-                ->format('png')
-                
-                ->merge(public_path('./assets/images/kuwait-police-logo-no-transparent.png'), 0.3, true) // Merging the logo
-                ->generate($data) // Generate the QR code
-        );
-    
-}
+    {
+            return 'data:image/png;base64,' . base64_encode(
+                QrCode::format('png')
+                ->size(250) 
+                ->style('dot') 
+                ->color(30, 86, 160) 
+                ->eye('square') 
+                ->errorCorrection('H') 
+                ->merge(public_path('./assets/images/kuwait-police-logo-no-transparent.png'), 0.2, true) 
+                ->generate($data)
+            );
+        
+    } 
 
 
         

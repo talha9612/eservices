@@ -22,14 +22,14 @@
     format('truetype'); /* Adjust the path as needed */
 }
 .visa-table td {
-    color: #375295; /* Text color */
+    color: #2F5496; /* Text color */
     font-family: 'Cairo', sans-serif; /* Use the Cairo font */
     font-weight: bold; /* Use bold weight */
     font-size: 1.1em; /* Increase font size */
     letter-spacing: 0.5px; /* Adds slight spacing to make text stand out */
 }
 .visa-table th {
-    color: #375295; /* Text color */
+    color: #41465c; /* Text color */
     font-family: 'Cairo', sans-serif; /* Use the Cairo font */
     font-size: 1.1em; /* Increase font size */
     letter-spacing: 0.5px; /* Adds slight spacing to make text stand out */
@@ -63,7 +63,7 @@
             border-bottom: 2px solid #ccc;
             padding-bottom: 10px;
             font-size: 1.2em;
-            color: #405a93;
+            color: #4574b8;
         }
 
         .visa-table {
@@ -76,8 +76,8 @@
             padding: 12px;
             text-align: center;
             font-size: 0.9em;
-            border: 1px solid #ddd;
-            background-color: #f0f0f0;
+            border: 1px solid #e5e5e5;
+            background-color: #eeeeee;
         }
 
         .visa-table th {
@@ -106,10 +106,16 @@
 </head>
 <body>
 
-        <div class="relative w-full overflow-hidden">
-            <img src="../assets/images/head.png" alt="Head image" class="w-full h-full"/>
-            <img src="{{ $qrCode }}" alt="QR Code" class="absolute left-10 top-10 md:left-20 md:top-20 border-8 border-white" style="width:10%; height:auto; margin-left: 20px;"/>
-        </div>     
+    <div class="relative w-full overflow-hidden">
+        <!-- Background Image (container) -->
+        <img src="../assets/images/head.png" alt="Head image" class="w-full h-full object-cover"/>
+    
+        <!-- QR Code Image, positioned relative to the background image -->
+        <img src="{{ $qrCode }}" alt="QR Code" 
+             class="absolute border-8 border-white"
+             style="width: 15%; height: auto; top: 16%; left: 6%;" />
+    </div>
+        
 
 
         <div class="section">
@@ -272,7 +278,7 @@
         
             <!-- Right Section with QR Code and Text -->
             <div style="text-align: right;">
-                <img src="{{ $qrCode }}" alt="QR Code"  style="width:50%; height:50%;"/>
+                <img src="{{ $pdfQrCode  }}" alt="QR Code"  style="width:50%; height:50%;"/>
                 <p style="color: #0D4B91; font-size: 16px; margin: 0;">
                     تعليمات مهمة<br>
                     <span style="font-size: 14px; color: #0D4B91;">Important Instructions</span>

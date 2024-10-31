@@ -6,6 +6,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Visa Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    {{-- <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: url('../assets/images/pdf-background.jpg') no-repeat center top;
+            background-size: cover;
+            overflow-y: scroll;
+        }
+
+        .scrollable-content {
+            min-height: 250vh;
+        }
+
+        @font-face {
+            font-family: 'Cairo';
+            src: url('/assets/fonts/cairo/cairo.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        .visa-table {
+            width: 100%;
+            margin: 300px 0 20px;
+            /* margin-top: 280px; */
+        }
+        .visa-table1 {
+            width: 100%;
+            margin: 80px 0 20px;
+            /* margin-top: 60px;  */
+        }
+        .visa-table2 {
+            width: 100%;
+            margin: 100px 0 20px;
+           /* // margin-top: 400px; */
+        }
+
+     .visa-table td {
+            text-align: center;
+            font-size: 2em;
+            color: #2F5496;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            width: 50%;
+        }
+        .visa-table1 td {
+            text-align: center;
+            font-size: 1.1em;
+            color: #2F5496;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            width: 50%;
+        }
+        .visa-table2 td {
+            text-align: center;
+            font-size: 1.1em;
+            color: #2F5496;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            width: 50%;
+        }
+
+        
+
+    </style> --}}
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -56,11 +126,30 @@
     margin-left: 70%;
     margin-bottom:2%;
 }
+.left{
+    padding-left: 10px;
+}
+.right{
+    padding-right: 10px;
+}
+.horizontal-line{
+    padding-top: 10px;
+    padding-left: 57px;
+    padding-right: 57px;
+}
+.horizontal-line hr{
+    height: 2px;
+    background-color: #cccccc;
+    border: none;
+}
         .section {
-            padding: 20px;
+            padding-top: 10px;
+            padding-left: 57px;
+            padding-right: 57px;
+            padding-bottom: 0px;
         }
         h2 {
-            border-bottom: 2px solid #ccc;
+            /* border-bottom: 2px solid #ccc; */
             padding-bottom: 10px;
             font-size: 1.2em;
             color: #4574b8;
@@ -71,17 +160,29 @@
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+        .visa-table tr{
+            border-bottom:2px solid #cccccc;
+        }
+        .visa-table tr:first-child{
+            border-top: 2px solid #cccccc;
+        }
 
         .visa-table th, .visa-table td {
             padding: 12px;
             text-align: center;
             font-size: 0.9em;
-            border: 1px solid #e5e5e5;
+            /* border: 1px solid #e5e5e5; */
             background-color: #eeeeee;
         }
 
         .visa-table th {
             width: 25%;
+        }
+        .visa-table th:first-child{
+            text-align: left;
+        }
+        .visa-table th:last-child{
+            text-align: right;
         }
 
         .visa-table td {
@@ -96,7 +197,10 @@
         }
 
         .footer {
-            padding: 20px;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            padding-right: 57px;
+            padding-left: 57px;
             text-align: center;
             border-top: 1px solid #ddd;
             font-size: 0.9em;
@@ -104,16 +208,18 @@
         }
     </style>
 </head>
+
+
 <body>
 
     <div class="relative w-full overflow-hidden">
         <!-- Background Image (container) -->
-        <img src="../assets/images/head.png" alt="Head image" class="w-full h-full object-cover"/>
+        <img src="{{public_path('/assets/images/head.png')}}" alt="Head image" class="w-full h-full object-cover" style="border-bottom: 3px solid #002e6e;"/>
     
         <!-- QR Code Image, positioned relative to the background image -->
         <img src="{{ $qrCode }}" alt="QR Code" 
              class="absolute border-8 border-white"
-             style="width: 15%; height: auto; top: 16%; left: 6%;" />
+             style="width: 15%; height: auto; top: 16%; left: 3%;" />
     </div>
         
 
@@ -133,12 +239,12 @@
             </table>
             
             <table class="visa-table">
-                <tr class="border">
+                <tr>
                     <th>Visa Number</th>
                     <td>{{ $visa->visa_no }}</td>
                     <th>رقم التأشيرة</th>
                 </tr>
-                <tr class="border">
+                <tr>
                     <th>Visa Type</th>
                     <td>{{ $visa->visa_type_english }}</td>
                     <th>{{ $visa->visa_type_arabic }}</th>
@@ -165,6 +271,9 @@
                     <th>{{ $visa->place_of_issue_arabic }}</th>
                 </tr>
             </table>
+        </div>
+        <div class="horizontal-line">
+            <hr>
         </div>
 
         <div class="section">
@@ -233,16 +342,19 @@
                 </tr>
             </table>
         </div>
+        <div class="horizontal-line">
+            <hr>
+        </div>
 
         <div class="section">
             <table style="width: 100%;" class="heading-table mt-15">
                 <tr>
                     <!-- English on the left with right-to-left text direction -->
                     <td class="left" style="text-align: left; direction: rtl;">
-                        <h2>Employer/Family Breadwinner Details</h2>
+                        <h2>Employer/Family <br>Breadwinner Details</h2>
                     </td>
                     <!-- Arabic on the right -->
-                    <td class="right" style="text-align: right;">
+                    <td class="right" style="text-align: right; vertical-align: top;">
                         <h2>تفاصيل صاحب العمل / معيل الأسرة</h2>
                     </td>
                 </tr>
@@ -266,39 +378,124 @@
                 </tr>
             </table>
         </div>
-        <div class="above-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #ddd;">
+        <div class="horizontal-line">
+            <hr>
+        </div>
+
+        <div class="above-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 57px; border-bottom: 1px solid #ddd;">
             <!-- Left Section with Text and Signature -->
             <div style="text-align: left;">
                 <p style="color: #0D4B91; font-size: 16px; margin: 0;">
                     مدير عام الإدارة العامة لشؤون الإقامة<br>
                     العميد/ يوسف حامد الأبوب
                 </p>
-                <img src="../assets/images/sign.png" alt="Signature" style="margin-top: 10px; max-width: 100px;">
+                <img src="{{public_path('/assets/images/sign.png')}}" alt="Signature" style="margin-top: -48px;max-width: 182px;">
             </div>
         
             <!-- Right Section with QR Code and Text -->
-            <div style="text-align: right;">
-                <img src="{{ $pdfQrCode  }}" alt="QR Code"  style="width:50%; height:50%;"/>
-                <p style="color: #0D4B91; font-size: 16px; margin: 0;">
+            <div style="text-align: right; display:flex; flex-direction:row; justify-content:space-between; width:25%">
+                <img src="{{ $pdfQrCode  }}" alt="QR Code"  style="width:33%;"/>
+                <span style="color: #0D4B91; font-size: 16px; margin: 0; padding-right:10px;">
                     تعليمات مهمة<br>
                     <span style="font-size: 14px; color: #0D4B91;">Important Instructions</span>
-                </p>
+                </span>
             </div>
         </div>
         
-        <div class="footer-block bg-cover bg-no-repeat bg-center" style="background-image: url('../assets/images/footer-block.png'); padding: 3px;"> </div>
-        <div class="footer relative bg-cover bg-no-repeat bg-center" style="background-image: url('../assets/images/footer-bg.png');">
-            <div style="display: flex; justify-content: space-between; padding: 20px; color: #0D4B91; font-size: 18px;">
-                <span>ختم الخروج</span>
-                <span>ختم الدخول</span>   
+        <div class="footer-block bg-cover bg-no-repeat bg-center" style="background-image: url('{{ public_path('/assets/images/footer-block.png') }}'); padding: 3px;"> </div>
+        {{-- <div class="footer relative bg-cover bg-no-repeat bg-center" style="background-image: url('{{ public_path('/assets/images/footer-bg.png') }}');"> --}}
+          {{--  <div style="display: flex; flex-direction:row; justify-content:space-between; color: #0D4B91; font-size: 18px;">
+                <div style="width: 33%; text-align:right;">ختم الخروج</div>
+                <div style="width: 33%; text-align:right;">ختم الدخول</div>   
             </div>
-        </div>
-        
-       
-        
+        </div> --}}
+        {{-- <div class="relative w-full overflow-hidden"> --}}
+            <!-- Background Image (container) -->
+            <img src="{{public_path('/assets/images/footer-bg.png')}}" alt="footer"/>
+             <div style="display: flex; flex-direction:row; justify-content:space-between; color: #0D4B91; font-size: 18px;">
+                <div style="width: 33%; text-align:right;">ختم الخروج</div>
+                <div style="width: 33%; text-align:right;">ختم الدخول</div>   
+            </div>
+            
 </body>
 </html>
+{{-- <body>
+    <img src="{{ $qrCode }}" alt="QR Code" 
+    class="absolute border-8 border-white"
+    style="display: block; width: 10%; height: auto; position: absolute; top: 100px; left: 6%;" />
+    <div class="scrollable-content">
+        <!-- QR Code Image -->
 
+        <!-- Visa Details Table -->
+        <table class="visa-table">
+            <tr>
+                <td style="padding-top:50px">{{ $visa->visa_no }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 5px">{{ $visa->visa_type_english }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 35px">{{ $visa->visa_purpose_english }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 40px">{{ \Carbon\Carbon::parse($visa->date_of_issue)->format('d-m-y') }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 10px">{{ \Carbon\Carbon::parse($visa->date_of_expiry)->format('d-m-y') }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 5px">{{ $visa->place_of_issue }}</td>
+            </tr>
+        </table>
+
+        <!-- Additional Details Table 1 -->
+        <table class="visa-table1">
+            <tr>
+                <td style="padding: 0px">{{ $visa->fullname_english }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 35px">{{ $visa->moi_refrence }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 12px">{{ $visa->nationality }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 7px">{{ $visa->gender }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 8px">{{ $visa->occupation_english }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 5px">{{ \Carbon\Carbon::parse($visa->date_of_birth)->format('d-m-y') }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 7px">{{ $visa->passport_no }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 6px">{{ $visa->place_of_issue }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 7px">{{ $visa->passport_type }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 8px">{{ \Carbon\Carbon::parse($visa->holder_expiry_date)->format('d-m-y') }}</td>
+            </tr>
+        </table>
+
+        <!-- Additional Details Table 2 -->
+        <table class="visa-table2">
+            <tr>
+                <td style="padding-top: 3px">{{ $visa->company_fullname_arabic }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 10px">{{ $visa->moi_refrence_family }}</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 10px">{{ $visa->mobile_no }}</td>
+            </tr>
+        </table>
+    </div>
+</body> --}}
 {{--<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -521,4 +718,4 @@
         </table>
     </div>
 </body>  --}}
-</html>
+{{-- </html> --}}

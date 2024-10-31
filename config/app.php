@@ -189,6 +189,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
        ])->toArray(),
 
 ];

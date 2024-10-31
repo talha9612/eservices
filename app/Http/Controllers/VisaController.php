@@ -8,8 +8,9 @@ use App\Models\Visa;
 use App\Models\Scopes\ActiveScope;
 use Barryvdh\DomPDF\Facade\Pdf; // Correct import for version 3.0
 // QR
+use Mpdf\Mpdf;use Barryvdh\Snappy\Facades\SnappyPdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
+use Spatie\Browsershot\Browsershot;
 // use Endroid\QrCode\QrCode;
 // use Endroid\QrCode\Logo\Logo;
 // use Endroid\QrCode\Builder\Builder;
@@ -90,18 +91,63 @@ class VisaController extends Controller
 
         return response()->errorMessage('User not Found !');
     }
-   public function show(string $id)
-{
-    // Retrieve the visa without global scope
-    $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-   // dd($visa->qr_link);
+    public function show(string $id)
+    {
+        // Retrieve the visa without global scope
+        $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+    
         // Generate QR code link (if needed for the view)
-        $url = route('verify.qr', 'qr_link' , $visa->qr_link);
+        $url = route('verify.qr', $visa->qr_link);
         $qrCode = $this->generateQrBase64($url);
         $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
         $pdfQrCode = $this->generateQrBase64($pdfUrl);
-        return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
-}
+    
+        // Render the HTML with Tailwind CSS
+        $html = view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'))->render();
+    
+        // Use Browsershot to capture the HTML as a PDF
+        $pdf = Browsershot::html($html)
+                          ->format('A2')
+                          ->setOption('landscape', false)
+                          ->margins(10, 10, 10, 10)
+                          ->showBackground()
+                          ->emulateMedia('print')
+                          ->pdf();
+    
+        return response($pdf)->header('Content-Type', 'application/pdf');
+    }
+    // public function show(string $id)
+    // {
+    //     // Retrieve the visa without global scope
+    //     $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+    //    // dd($visa->qr_link);
+    //         // Generate QR code link (if needed for the view)
+    //         $url = route('verify.qr', $visa->qr_link);
+    //         $qrCode = $this->generateQrBase64($url);
+    //         $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
+    //         $pdfQrCode = $this->generateQrBase64($pdfUrl);
+    //         $pdf = Pdf::loadView('visa.show', compact('visa', 'qrCode', 'pdfQrCode'))
+    //         ->setPaper('A2', 'portrait')
+    //         ->setOption('isHtml5ParserEnabled', true)
+    //         ->setOption('isRemoteEnabled', true) // for external assets if needed
+    //         ->setOption('isPhpEnabled', true);
+        
+    //    return $pdf->stream('visa.pdf'); // Specify a name for the downloaded PDF
+    //     // return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
+
+    // }
+//    public function show(string $id)
+// {
+//     // Retrieve the visa without global scope
+//     $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+//    // dd($visa->qr_link);
+//         // Generate QR code link (if needed for the view)
+//         $url = route('verify.qr', 'qr_link' , $visa->qr_link);
+//         $qrCode = $this->generateQrBase64($url);
+//         $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
+//         $pdfQrCode = $this->generateQrBase64($pdfUrl);
+//         return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
+// }
     /**
      * Remove the specified resource from storage.
      */

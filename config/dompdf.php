@@ -45,7 +45,7 @@ return [
          * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
          * Symbol, ZapfDingbats.
          */
-        'font_dir' => storage_path('fonts'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
+        'font_dir' => public_path('/assets/fonts/cairo'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
 
         /**
          * The location of the DOMPDF font cache directory
@@ -55,7 +55,7 @@ return [
          *
          * Note: This directory must exist and be writable by the webserver process.
          */
-        'font_cache' => storage_path('fonts'),
+        'font_cache' => public_path('/assets/fonts/cairo'),
 
         /**
          * The location of a temporary directory.
@@ -266,7 +266,7 @@ return [
          *
          * @var bool
          */
-        'enable_remote' => false,
+        'enable_remote' => true,
 
         /**
          * List of allowed remote hosts

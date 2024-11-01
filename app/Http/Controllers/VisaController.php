@@ -114,43 +114,9 @@ class VisaController extends Controller
                           ->emulateMedia('print')
                           ->pdf();
     
-        return response($pdf)->header('Content-Type', 'application/pdf');
+        //return response($pdf)->header('Content-Type', 'application/pdf');
+        return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
     }
-    // public function show(string $id)
-    // {
-    //     // Retrieve the visa without global scope
-    //     $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-    //    // dd($visa->qr_link);
-    //         // Generate QR code link (if needed for the view)
-    //         $url = route('verify.qr', $visa->qr_link);
-    //         $qrCode = $this->generateQrBase64($url);
-    //         $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
-    //         $pdfQrCode = $this->generateQrBase64($pdfUrl);
-    //         $pdf = Pdf::loadView('visa.show', compact('visa', 'qrCode', 'pdfQrCode'))
-    //         ->setPaper('A2', 'portrait')
-    //         ->setOption('isHtml5ParserEnabled', true)
-    //         ->setOption('isRemoteEnabled', true) // for external assets if needed
-    //         ->setOption('isPhpEnabled', true);
-        
-    //    return $pdf->stream('visa.pdf'); // Specify a name for the downloaded PDF
-    //     // return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
-
-    // }
-//    public function show(string $id)
-// {
-//     // Retrieve the visa without global scope
-//     $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-//    // dd($visa->qr_link);
-//         // Generate QR code link (if needed for the view)
-//         $url = route('verify.qr', 'qr_link' , $visa->qr_link);
-//         $qrCode = $this->generateQrBase64($url);
-//         $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
-//         $pdfQrCode = $this->generateQrBase64($pdfUrl);
-//         return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
-// }
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $visa = Visa::withoutGlobalScope(ActiveScope::class)->find($id);
@@ -196,28 +162,4 @@ class VisaController extends Controller
             );
         
     } 
-
-
-        
-        // Step 1: Create a new instance of the QR code
-        // $qrCode = QrCode::create($data)
-        //     ->setEncoding(new Encoding('UTF-8')) // Use the imported Encoding class
-        //     ->setSize(350)
-        //     ->setMargin(20)
-        //     ->setForegroundColor(new Color(68, 114, 196)) // Set foreground color to #1C6198
-        //     ->setBackgroundColor(new Color(255, 255, 255)); // Set background color to white
-
-        // $logoPath = public_path('assets/images/kuwait-police-logo-no-transparent.png');
-        // $logo = Logo::create($logoPath)->setResizeToWidth(60);
-
-        // // Step 3: Write the QR code to PNG format
-        // $writer = new PngWriter();
-        // $result = $writer->write($qrCode, $logo);
-
-        // // Step 4: Save the QR code to a file
-        // $qrCodePath = public_path('uploads/qrcodes/qr_code_with_logo.png');
-        // $result->saveToFile($qrCodePath);
-
-        // return $qrCodePath;
-    //}
 }

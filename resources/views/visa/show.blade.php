@@ -415,8 +415,7 @@
              <div style="display: flex; flex-direction:row; justify-content:space-between; color: #0D4B91; font-size: 18px;">
                 <div style="width: 33%; text-align:right;">ختم الخروج</div>
                 <div style="width: 33%; text-align:right;">ختم الدخول</div>   
-            </div>
-            
+            </div>       
 </body>
 </html>
 {{-- <body>

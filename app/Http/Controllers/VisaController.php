@@ -8,7 +8,8 @@ use App\Models\Visa;
 use App\Models\Scopes\ActiveScope;
 use Barryvdh\DomPDF\Facade\Pdf; // Correct import for version 3.0
 // QR
-use Mpdf\Mpdf;use Barryvdh\Snappy\Facades\SnappyPdf;
+use Mpdf\Mpdf;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\Browsershot\Browsershot;
 // use Endroid\QrCode\QrCode;
@@ -95,27 +96,28 @@ class VisaController extends Controller
     {
         // Retrieve the visa without global scope
         $visa = Visa::withoutGlobalScope(ActiveScope::class)->findOrFail($id);
-    
+
         // Generate QR code link (if needed for the view)
         $url = route('verify.qr', $visa->qr_link);
         $qrCode = $this->generateQrBase64($url);
         $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
         $pdfQrCode = $this->generateQrBase64($pdfUrl);
-    
+
         // Render the HTML with Tailwind CSS
         $html = view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'))->render();
-    
+
         // Use Browsershot to capture the HTML as a PDF
         $pdf = Browsershot::html($html)
-                          ->format('A2')
-                          ->setOption('landscape', false)
-                          ->margins(10, 10, 10, 10)
-                          ->showBackground()
-                          ->emulateMedia('print')
-                          ->pdf();
-    
-        //return response($pdf)->header('Content-Type', 'application/pdf');
-        return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
+            ->format('A2')
+            ->setOption('landscape', false)
+            ->showBackground()
+            ->emulateMedia('print')
+            ->pdf();
+
+        return response($pdf)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'attachment; filename="visadetails.pdf"');
+        //return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
     }
     public function destroy(string $id)
     {
@@ -150,16 +152,15 @@ class VisaController extends Controller
 
     public function generateQrBase64($data)
     {
-            return 'data:image/png;base64,' . base64_encode(
-                QrCode::format('png')
-                ->size(250) 
-                ->style('dot') 
-                ->color(30, 86, 160) 
-                ->eye('square') 
-                ->errorCorrection('H') 
-                ->merge(public_path('./assets/images/kuwait-police-logo-no-transparent.png'), 0.2, true) 
+        return 'data:image/png;base64,' . base64_encode(
+            QrCode::format('png')
+                ->size(250)
+                ->style('dot')
+                ->color(30, 86, 160)
+                ->eye('square')
+                ->errorCorrection('H')
+                ->merge(public_path('./assets/images/kuwait-police-logo-no-transparent.png'), 0.2, true)
                 ->generate($data)
-            );
-        
-    } 
+        );
+    }
 }

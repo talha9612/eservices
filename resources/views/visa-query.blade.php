@@ -224,7 +224,7 @@
 		                        </select>
 		                      </div>
 		                    </div>
-		                    <div class="col-md-12">
+		                    {{-- <div class="col-md-12">
 		                      	<div class="form-group">
 		                        	<label>Captcha <span class="error">*</span></label>
 				                    <input type="text" class="form-control" id="captcha" readonly style="background-color: #82b082;color: #fff; text-align: center; pointer-events: none;">
@@ -234,7 +234,17 @@
 		                    	<div class="form-group">
 		                    		<input type="text" class="form-control" id="captcha-value" placeholder="Enter Captcha">
 		                    	</div>
-		                    </div>
+		                    </div> --}}
+							<div class="form-group">
+								<label for="captcha">CAPTCHA</label>
+								<div class="d-flex">
+									<span>{!! captcha_img() !!}</span>
+									<button type="button" class="btn btn-secondary ml-2" id="reload">Refresh</button>
+								</div>
+							</div>
+							<div class="form-group">
+								<input id="captcha" type="text" class="form-control" name="captcha">
+							</div>
 		                    <div class="col-md-12">
 		                      	<div class="form-group">
 				                    <button class="btn btn-success" style="background-color: #218838; color: #fff; width: 100%;"><i class="fas fa-search"></i> &nbsp; Search</button>
@@ -250,7 +260,19 @@
 </div>
 @endsection
 @section('scripts')
-<script>
+{{-- <script>
 	$('#captcha').val(Math.floor(10000000 + Math.random() * 90000000));
+</script> --}}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+    $('#reload').click(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'reload-captcha',
+            success: function (data) {
+                $(".captcha span").html(data.captcha);
+            }
+        });
+    });
 </script>
 @endsection

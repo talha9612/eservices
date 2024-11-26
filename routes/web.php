@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Route;
+use Mews\Captcha\Captcha;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,4 +67,7 @@ Route::controller(AuthController::class)->group(function() {
     });
 
     Route::post('/logout', 'logout')->name('logout');
+});
+Route::get('reload-captcha', function () {
+    return response()->json(['captcha'=> captcha_img()]);
 });

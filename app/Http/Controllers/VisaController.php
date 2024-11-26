@@ -12,13 +12,6 @@ use Mpdf\Mpdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\Browsershot\Browsershot;
-// use Endroid\QrCode\QrCode;
-// use Endroid\QrCode\Logo\Logo;
-// use Endroid\QrCode\Builder\Builder;
-// use Endroid\QrCode\Encoding\Encoding;
-// use Endroid\QrCode\Writer\PngWriter;
-// use Endroid\QrCode\Label\Label;
-// use Endroid\QrCode\Color\Color;
 
 class VisaController extends Controller
 {

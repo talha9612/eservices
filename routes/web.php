@@ -28,9 +28,9 @@ Route::controller(HomeController::class)->group(function(){
     Route::post('/search-visa', 'search')->name('search.visa');
     Route::get('/verify/qrcode/{link}', 'verifyQrCode')->name('verify.qr');
 });
-Route::get('/visa/{id}', [VisaController::class, 'show'])->name('visa.show');
-Route::get('/visa/{id}/pdf', [VisaController::class, 'generatePdf'])->name('visa.pdf');
-
+// Route::get('/visa/{id}', [VisaController::class, 'show'])->name('visa.show');
+// Route::get('/visa/{id}/pdf', [VisaController::class, 'generatePdf'])->name('visa.pdf');
+Route::post('/visa/pdf', [VisaController::class, 'generatePdf'])->name('visa.pdf');
 Route::middleware('auth')->group(function () {
     
     //---------- DASHBOARD ROUTES ----------//
@@ -39,9 +39,10 @@ Route::middleware('auth')->group(function () {
     });
 
     // ----------------- VISA ROUTES ------------//
-    // Route::resource('/visa', VisaController::class);
+    Route::resource('/visa', VisaController::class);
     Route::controller(VisaController::class)->group(function(){
         Route::put('/visa/update-status/{id}', 'updateVisaStatus')->name('visa.update.status');
+        Route::get('/visa/{id}',  'show')->name('visa.show');
     });
 
     // ----------------- MANUAL VISA ROUTES ------------//
@@ -68,6 +69,7 @@ Route::controller(AuthController::class)->group(function() {
 
     Route::post('/logout', 'logout')->name('logout');
 });
-Route::get('reload-captcha', function () {
-    return response()->json(['captcha'=> captcha_img()]);
-});
+
+
+Route::get('captcha', [\Mews\Captcha\Captcha::class, 'create'])->name('captcha.create');
+Route::get('/refresh-captcha', [VisaController::class, 'refreshCaptcha'])->name('captcha.refresh');

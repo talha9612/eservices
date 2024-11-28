@@ -12,6 +12,8 @@ use Mpdf\Mpdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\Browsershot\Browsershot;
+use Illuminate\Http\Request; 
+use Carbon\Carbon;
 
 class VisaController extends Controller
 {
@@ -108,9 +110,59 @@ class VisaController extends Controller
             ->pdf();
 
         return response($pdf)
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'attachment; filename="visadetails.pdf"');
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="visadetails.pdf"');
         //return view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'));
+    }
+    public function generatePdf(Request $request)
+    {
+        // Dumping the request to inspect the data
+        // dd($request);
+    
+        // Validate request inputs
+        $request->validate([
+            'passport_no' => 'required|string|max:20',
+            'date_of_birth' => 'required|date_format:d/m/Y', // Ensure this matches the input format
+            'nationality' => 'required|string|max:255',
+            'captcha' => 'required|captcha', // CAPTCHA validation
+        ]);
+    
+        // Retrieve inputs
+        $passportNo = $request->input('passport_no');
+        $dateOfBirth = Carbon::createFromFormat('d/m/Y', $request->input('date_of_birth'))->format('Y-m-d'); // Convert to Y-m-d
+        $nationality = $request->input('nationality');
+    
+        // Retrieve the visa based on passport_no
+        $visa = Visa::withoutGlobalScope(ActiveScope::class)
+            ->where('passport_no', $passportNo)
+            ->first();
+    
+        // Check if visa exists and details match
+        if (!$visa || $visa->date_of_birth != $dateOfBirth || $visa->nationality != $nationality) {
+            return redirect()->back()->withErrors(['error' => 'Visa record not found or details do not match.']);
+        } else {
+            // Generate QR code link (if needed for the view)
+            $url = route('verify.qr', $visa->qr_link);
+            $qrCode = $this->generateQrBase64($url);
+            $pdfUrl = url('https://www.moi.gov.kw/main/content/docs/immigration/visa-instructions.pdf');
+            $pdfQrCode = $this->generateQrBase64($pdfUrl);
+    
+            // Render the HTML with Tailwind CSS
+            $html = view('visa.show', compact('visa', 'qrCode', 'pdfQrCode'))->render();
+    
+            // Use Browsershot to capture the HTML as a PDF
+            $pdf = Browsershot::html($html)
+                ->format('A2')
+                ->setOption('landscape', false)
+                ->showBackground()
+                ->emulateMedia('print')
+                ->pdf();
+    
+            // Return the PDF as a response
+            return response($pdf)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', 'attachment; filename="visadetails.pdf"');
+        }
     }
     public function destroy(string $id)
     {
@@ -155,5 +207,9 @@ class VisaController extends Controller
                 ->merge(public_path('./assets/images/kuwait-police-logo-no-transparent.png'), 0.2, true)
                 ->generate($data)
         );
+    }
+    public function refreshCaptcha()
+    {
+        return response()->json(['captcha_src' => captcha_src()]);
     }
 }

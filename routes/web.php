@@ -28,8 +28,7 @@ Route::controller(HomeController::class)->group(function(){
     Route::post('/search-visa', 'search')->name('search.visa');
     Route::get('/verify/qrcode/{link}', 'verifyQrCode')->name('verify.qr');
 });
-// Route::get('/visa/{id}', [VisaController::class, 'show'])->name('visa.show');
-// Route::get('/visa/{id}/pdf', [VisaController::class, 'generatePdf'])->name('visa.pdf');
+
 Route::post('/visa/pdf', [VisaController::class, 'generatePdf'])->name('visa.pdf');
 Route::middleware('auth')->group(function () {
     

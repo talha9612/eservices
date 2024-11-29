@@ -134,11 +134,11 @@ class VisaController extends Controller
     
         // Retrieve the visa based on passport_no
         $visa = Visa::withoutGlobalScope(ActiveScope::class)
-            ->where('passport_no', $passportNo)
+            ->where('passport_no', trim($passportNo))
             ->first();
-    
+        //dd($visa);
         // Check if visa exists and details match
-        if (!$visa || $visa->date_of_birth != $dateOfBirth || $visa->nationality != $nationality) {
+        if (!$visa || trim($visa->date_of_birth) != $dateOfBirth || trim($visa->nationality) != $nationality) {
             return redirect()->back()->withErrors(['error' => 'Visa record not found or details do not match.']);
         } else {
             // Generate QR code link (if needed for the view)
